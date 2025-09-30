@@ -12,6 +12,13 @@
 #include <ArduinoJson.h>
 #include "A4988.h"
 
+// ---------------needed for max connection frequency-----
+
+#define MAX_CLIENTS WEBSOCKETS_SERVER_CLIENT_MAX
+#define MINTIME2NEXTTRY 30000UL   // 30 seconds guard before a client can submit again
+
+static unsigned long lastSubmit[MAX_CLIENTS] = {0};
+
 // ---------------- Stepper config ----------------
 #define MOTOR_STEPS 400
 #define MOTOR_ACCEL 2000
@@ -349,16 +356,14 @@ void TurnWheel(int count){
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length){
   switch(type){
     case WStype_DISCONNECTED:
-      Serial.printf("Client %u disconnected\n", num);
+      Serial.printf("Client %u disconnected\\n", num);
       break;
 
     case WStype_CONNECTED:
-      Serial.printf("Client %u connected\n", num);
-      // On first connect, (re)issue a fresh problem to that client
+
+      Serial.printf("Client %u connected\\n", num);
       makeNewProblem();
-      lastActivity = millis();
       sendProblemTo(num);
-      //sendNewProblemToAll();
       break;
 
     case WStype_TEXT: {
@@ -367,8 +372,19 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
 
       const char* mtype = doc_rx["type"] | "";
       if (strcmp(mtype, "answers") == 0) {
+        // Rate limit answer submissions
+        if (millis() - lastSubmit[num] < MINTIME2NEXTTRY) {
+          Serial.printf("Client %u tried to submit too quickly\\n", num);
+          StaticJsonDocument<128> msg;
+          msg["type"] = "info";
+          msg["message"] = "Please wait before trying again.";
+          String out; serializeJson(msg, out);
+          webSocket.sendTXT(num, out);
+          return;
+        }
+        lastSubmit[num] = millis();
+
         uint32_t pid = doc_rx["problemId"] | 0;
-        // If the client answered an old problem id, regenerate & ignore
         if (pid != current.id) {
           // send info + re-send current problem
           doc_tx.clear(); doc_tx["type"]="info"; doc_tx["message"]="Problem expired. Sending a new one.";
@@ -387,15 +403,11 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
         bool okDiv  = (d == current.divAns);
 
         sendVerdictTo(num, pid, okAdd, okSub, okProd, okDiv);
-        // Allow user to request a fresh one
-        // (we only generate on 'next' to avoid racing multiple clients)
       }
       else if (strcmp(mtype, "next") == 0) {
-        // Generate and send a brand new problem (just to this client)
         makeNewProblem();
         lastActivity = millis();
         sendProblemTo(num);
-        //sendNewProblemToAll();
       }
       break;
     }
