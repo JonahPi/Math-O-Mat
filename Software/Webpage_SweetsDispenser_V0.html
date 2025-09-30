@@ -1,186 +1,139 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Train your Brain!</title>
+<style>
+  :root { font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif; }
+  body { margin: 0; }
+  .page { max-width: 760px; margin: 24px auto; padding: 0 16px; }
+  .header h2 { margin:0; }
+  .status { font-size:.9em; color:#555; padding:4px 8px; border:1px solid #e6e6e6; background:#fafafa; border-radius:8px; margin-top:6px; display:inline-block; }
+  .status.ok  { color:#1a7f37; border-color:#cfe8cf; background:#f2fbf3; }
+  .status.err { color:#b42318; border-color:#f5c5c0; background:#fff4f3; }
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+  th, td { padding: 8px; }
+  td.op, td.eq { text-align:center; width: 2rem; }
+  input[type=number] { width: 9ch; padding: .35rem .5rem; font-size: 1rem; }
+  .row { border-bottom: 1px solid #eee; }
+  .green{ color:#1a7f37; font-weight:600; }
+  .red  { color:#b42318; font-weight:600; }
+  button { padding: .6rem .9rem; margin-right:.5rem; }
+  .muted{ color:#666; font-size:.9em; margin-top:8px; }
+  [hidden]{ display:none !important; }
+</style>
+</head><body>
+  <div class="page">
+    <div class="header">
+      <h2>Train your Brain!</h2>
+    </div>
+    <span id="status" class="status" aria-live="polite">Connecting…</span>
 
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+    <table>
+      <thead><tr><th>No1</th><th class="op">…</th><th>No2</th><th class="eq">=</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr class="row">
+          <td><strong><span id="sum1">-</span></strong></td><td class="op"><strong>+</strong></td>
+          <td><strong><span id="sum2">-</span></strong></td><td class="eq"><strong>=</strong></td>
+          <td><input type="number" id="lsgAdd" step="1" min="-9999" max="9999"></td>
+        </tr>
+        <tr class="row">
+          <td><strong><span id="sub1">-</span></strong></td><td class="op"><strong>−</strong></td>
+          <td><strong><span id="sub2">-</span></strong></td><td class="eq"><strong>=</strong></td>
+          <td><input type="number" id="lsgSub" step="1" min="-9999" max="9999"></td>
+        </tr>
+        <tr class="row">
+          <td><strong><span id="prod1">-</span></strong></td><td class="op"><strong>×</strong></td>
+          <td><strong><span id="prod2">-</span></strong></td><td class="eq"><strong>=</strong></td>
+          <td><input type="number" id="lsgProd" step="1" min="-9999" max="9999"></td>
+        </tr>
+        <tr class="row">
+          <td><strong><span id="div1">-</span></strong></td><td class="op"><strong>÷</strong></td>
+          <td><strong><span id="div2">-</span></strong></td><td class="eq"><strong>=</strong></td>
+          <td><input type="number" id="lsgDiv" step="1" min="-9999" max="9999"></td>
+        </tr>
+      </tbody>
+    </table>
 
-<h1>Train your Brain !</h1>
-
-<table>
-<thead>
-<tr>
-<td>
-<h4>No1</h4>
-</td>
-<td>
-<h4>...</h4>
-</td>
-<td>
-<h4>&nbsp;No2</h4>
-</td>
-<td>
-<h4>=</h4>
-</td>
-<td>
-<h4></h4>
-</td>
-<td>
-<h4>Result</h4>
-</td>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style='text-align: center;'>
-<p><strong><span id='sum1'>-</span></strong></p>
-</td>
-<td style='text-align: center;'>
-<p><strong>+</strong></p>
-</td>
-<td style='text-align: center;'>
-<p><strong><span id='sum2'>-</span></strong></p>
-</td>
-<td style='text-align: center;'>
-<p><strong>=</strong></p>
-</td>
-<td><td><input type='number' name='lsgAdd' id='lsgAdd' max='9999' min='-9999' step='1'></td></td>
-</tr>
-<tr>
-<td style='text-align: center;'>
-<p><strong><span id='sub1'>-</span></strong></p>
-</td>
-<td style='text-align: center;'>
-<p><strong>-</strong></p>
-</td>
-<td style='text-align: center;'>
-<p><strong><span id='sub2'>-</span></strong></p>
-</td>
-<td style='text-align: center;'>
-<p><strong>=</strong></p>
-</td>
-<td><td><input type='number' name='lsgSub' id='lsgSub' max='9999' min='-9999' step='1'></td></td>
-</tr>
-<tr>
-<td style='text-align: center;'>
-<p><strong><span id='prod1'>-</span></strong></p>
-</td>
-<td style='text-align: center;'>
-<p><strong>*</strong></p>
-</td>
-<td style='text-align: center;'>
-<p><strong><span id='prod2'>-</span></strong></p>
-</td>
-<td style='text-align: center;'>
-<p><strong>=</strong></p>
-</td>
-<td><td><input type='number' name='lsgProd' id='lsgProd' max='9999' min='-9999' step='1'></td></td>
-</tr>
-<tr>
-<td style='text-align: center;'>
-<p><strong><span id='div1'>-</span></strong></p>
-</td>
-<td style='text-align: center;'>
-<p><strong>/</strong></p>
-</td>
-<td style='text-align: center;'>
-<p><strong><span id='div2'>-</span></strong></p>
-</td>
-<td style='text-align: center;'>
-<p><strong>=</strong></p>
-</td>
-<td><td><input type='number' name='lsgDiv' id='lsgDiv' max='9999' min='-9999' step='1'></td></td>
-</tr>
-</tbody>
-</table>
-<p><button id='BTN_CHECK' type='button'>Check result </button></p>
-<p><button id='BTN_SEND_BACK' type='button' hidden>Continue </button></p>
-
+    <div style="margin-top:10px;">
+      <button id="BTN_CHECK" type="button">Check result</button>
+      <button id="BTN_SEND_BACK" type="button" hidden>Continue</button>
+    </div>
+  </div>
 
 <script>
+  // ---- Status helper (small box) ----
+  const statusEl = document.getElementById('status');
+  function setStatus(text, cls){ statusEl.textContent = text || ''; statusEl.className = 'status' + (cls? (' ' + cls) : ''); }
 
+  // ---- UI refs ----
+  const $ = (id)=>document.getElementById(id);
+  const spans = { sum1:$('sum1'), sum2:$('sum2'), sub1:$('sub1'), sub2:$('sub2'),
+                  prod1:$('prod1'), prod2:$('prod2'), div1:$('div1'), div2:$('div2') };
+  const inputs = ['lsgAdd','lsgSub','lsgProd','lsgDiv'].map($);
+  function setInputsEnabled(on){ inputs.forEach(i=> on? i.removeAttribute('disabled'): i.setAttribute('disabled','')); }
+  function resetInputs(){ inputs.forEach(i=>{ i.value=''; i.classList.remove('green','red'); i.style.color=''; }); }
 
-  var Socket;
-  var obj;
-  var CorrectAnswers;
-  document.getElementById('BTN_CHECK').addEventListener('click', button_check_result);
-  document.getElementById('BTN_SEND_BACK').addEventListener('click', button_send_back);
-  function init() {
-    Socket = new WebSocket('ws://' + window.location.hostname + ':81/');
-    Socket.onmessage = function(event) {
-      processCommand(event);
+  // ---- WebSocket protocol ----
+  let socket, problemId=null;
+
+  function connectWS(){
+    socket = new WebSocket('ws://' + window.location.hostname + ':81/');
+    socket.onopen  = ()=> setStatus('Connected. Waiting for a problem…','ok');
+    socket.onclose = ()=> setStatus('Disconnected.','');
+    socket.onerror = ()=> setStatus('Connection error.','err');
+
+    socket.onmessage = (e)=>{
+      try{
+        const msg = JSON.parse(e.data);
+        if(msg.type==='problem'){
+          problemId = msg.problemId;
+          spans.sum1.textContent  = msg.sum1;  spans.sum2.textContent  = msg.sum2;
+          spans.sub1.textContent  = msg.sub1;  spans.sub2.textContent  = msg.sub2;
+          spans.prod1.textContent = msg.prod1; spans.prod2.textContent = msg.prod2;
+          spans.div1.textContent  = msg.div1;  spans.div2.textContent  = msg.div2;
+          resetInputs(); setInputsEnabled(true);
+          $('BTN_CHECK').hidden = false; $('BTN_SEND_BACK').hidden = true;
+          setStatus('Solve the tasks and press “Check result”.','ok');
+        } else if (msg.type==='verdict'){
+          const map=[['lsgAdd',msg.correct?.add],['lsgSub',msg.correct?.sub],['lsgProd',msg.correct?.prod],['lsgDiv',msg.correct?.div]];
+          map.forEach(([id,ok])=>{
+            const el=$(id); el.classList.remove('green','red');
+            if(ok===true){ el.classList.add('green'); el.style.color='green'; }
+            if(ok===false){ el.classList.add('red');   el.style.color='red'; }
+          });
+          setStatus(`You got ${msg.count} correct${msg.count===4?' 🎉':''}`, msg.count===4?'ok':'');
+          $('BTN_SEND_BACK').hidden=false;
+        } else if (msg.type==='info'){
+          setStatus(msg.message || '');
+        }
+      }catch(_){ /* ignore malformed */ }
     };
   }
-  function button_check_result() {
-	CorrectAnswers = 0;
-	document.getElementById('lsgAdd').setAttribute('disabled', '');
-	document.getElementById('lsgSub').setAttribute('disabled', '');
- 	document.getElementById('lsgProd').setAttribute('disabled', '');
-	document.getElementById('lsgDiv').setAttribute('disabled', '');
-	if (document.getElementById('lsgAdd').value == obj.LSGadd){
-		CorrectAnswers += 1;
-		document.getElementById('lsgAdd').style.color = 'green';
-	} else {
-		document.getElementById('lsgAdd').style.color = 'red';
-	}
-	if (document.getElementById('lsgSub').value == obj.LSGsub){
-		CorrectAnswers += 1;
-		document.getElementById('lsgSub').style.color = 'green';
 
-	} else  {
-		document.getElementById('lsgSub').style.color = 'red';
-	}
-	if (document.getElementById('lsgProd').value == obj.LSGprod){
-		CorrectAnswers += 1;
-		document.getElementById('lsgProd').style.color = 'green';
-	} else  {
-		document.getElementById('lsgProd').style.color = 'red';
-	}
-	if (document.getElementById('lsgDiv').value == obj.LSGdiv){
-		CorrectAnswers += 1;
-		document.getElementById('lsgDiv').style.color = 'green';
-	} else  {
-		document.getElementById('lsgDiv').style.color = 'red';
-	}
-    console.log(CorrectAnswers);
-	document.getElementById('BTN_CHECK').setAttribute('hidden', 'hidden');
-	document.getElementById('BTN_SEND_BACK').removeAttribute('hidden');
+  function onCheck(){
+    if(!socket || socket.readyState!==WebSocket.OPEN){ setStatus('Not connected.','err'); return; }
+    if(!problemId){ setStatus('No active problem.','err'); return; }
+    setInputsEnabled(false);
+    const payload = {
+      type:'answers', problemId,
+      add: $('lsgAdd').value, sub: $('lsgSub').value, prod: $('lsgProd').value, div: $('lsgDiv').value
+    };
+    socket.send(JSON.stringify(payload));
+    $('BTN_CHECK').hidden = true;
+    setStatus('Checking…');
+  }
 
+  function onNext(){
+    if(!socket || socket.readyState!==WebSocket.OPEN){ setStatus('Not connected.','err'); return; }
+    socket.send(JSON.stringify({type:'next'}));
+    $('BTN_SEND_BACK').hidden = true;
+    setStatus('Requesting a new problem…');
   }
-  function button_send_back() {
-  var loesungen = {
-	count: CorrectAnswers,
-	};
-	ResetCounter = 0;
-	document.getElementById('lsgAdd').value = '';
-	document.getElementById('lsgSub').value = '';
-	document.getElementById('lsgProd').value = '';
-	document.getElementById('lsgDiv').value = '';
-	document.getElementById('lsgAdd').style.color = 'black';
-	document.getElementById('lsgSub').style.color = 'black';
-	document.getElementById('lsgProd').style.color = 'black';
-	document.getElementById('lsgDiv').style.color = 'black';
-    console.log(JSON.stringify(loesungen));
-    Socket.send(JSON.stringify(loesungen));
-	document.getElementById('BTN_CHECK').removeAttribute('hidden');
-	document.getElementById('BTN_SEND_BACK').setAttribute('hidden', 'hidden');
-  }
-  function processCommand(event) {
-	obj = JSON.parse(event.data);
-    document.getElementById('sum1').innerHTML = obj.sum1;
-    document.getElementById('sum2').innerHTML = obj.sum2;
-    document.getElementById('sub1').innerHTML = obj.sub1;
-    document.getElementById('sub2').innerHTML = obj.sub2;
-    document.getElementById('prod1').innerHTML = obj.prod1;
-    document.getElementById('prod2').innerHTML = obj.prod2;
-    document.getElementById('div1').innerHTML = obj.div1;
-    document.getElementById('div2').innerHTML = obj.div2;
-	document.getElementById('lsgAdd').removeAttribute('disabled', '');
-	document.getElementById('lsgSub').removeAttribute('disabled', '');
- 	document.getElementById('lsgProd').removeAttribute('disabled', '');
-	document.getElementById('lsgDiv').removeAttribute('disabled', '');
-    console.log(obj.sum1);
-    console.log(obj.sum2);
- }
-  window.onload = function(event) {
-    init();
-  }
+
+  window.addEventListener('load', ()=>{
+    connectWS();
+    $('BTN_CHECK').addEventListener('click', onCheck);
+    $('BTN_SEND_BACK').addEventListener('click', onNext);
+    setInputsEnabled(false);
+  });
 </script>
-</html>
+</body></html>
